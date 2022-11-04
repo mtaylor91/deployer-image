@@ -10,6 +10,9 @@ ENV KUSTOMIZE_FILENAME kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz
 ENV KUSTOMIZE_URL ${KUSTOMIZE_RELEASE}/${KUSTOMIZE_FILENAME}
 ENV DEBIAN_FRONTEND noninteractive
 
+ENV TEA_VERSION 0.9.0
+ENV TEA_URL https://dl.gitea.io/tea/${TEA_VERSION}/tea-${TEA_VERSION}-linux-amd64
+
 RUN apt-get update \
   && apt-get upgrade -y \
   && apt-get install -y curl git \
@@ -23,5 +26,9 @@ RUN curl -LfO ${KUBECTL_URL} \
 RUN curl -Lf ${KUSTOMIZE_URL} | tar -xz \
   && install -t /usr/local/bin/ kustomize \
   && rm -f kustomize
+
+RUN curl -Lfo tea ${TEA_URL} \
+  && install -t /usr/local/bin/ -m 0755 tea \
+  && rm -f tea
 
 ADD release-tag /usr/local/bin/release-tag
