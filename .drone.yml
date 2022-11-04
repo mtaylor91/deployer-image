@@ -28,7 +28,7 @@ steps:
   - set -u
   - git fetch origin 'refs/tags/*:refs/tags/*'
   - git fetch origin $${DRONE_BRANCH}
-  - export tag=$(get-release-tag)
+  - export tag=$(release-tag)
   - git tag $${tag}
   - git push origin $${tag}
 image_pull_secrets:
