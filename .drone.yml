@@ -25,10 +25,10 @@ steps:
 - name: release
   image: images.home.mtaylor.io/deployer:latest
   commands:
-  - set -u
+  - set -uo pipefail
   - git fetch origin 'refs/tags/*:refs/tags/*'
   - git fetch origin $${DRONE_BRANCH}
-  - export tag=$(release-tag)
+  - export tag=$(get-release-tag)
   - git tag $${tag}
   - git push origin $${tag}
 image_pull_secrets:
