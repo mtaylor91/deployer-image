@@ -8,6 +8,7 @@ steps:
   settings:
     repo: images.home.mtaylor.io/deployer
     auto_tag: true
+    enable_cache: true
     username:
       from_secret: registry_username
     password:
@@ -16,6 +17,27 @@ steps:
       from_secret: registry_url
 image_pull_secrets:
 - dockerconfigjson
+---
+kind: pipeline
+type: kubernetes
+name: promote
+steps:
+- name: release
+  image: images.home.mtaylor.io/deployer:0.0.3
+  commands:
+  - set -u
+  - git fetch origin 'refs/tags/*:refs/tags/*'
+  - git fetch origin $${DRONE_BRANCH}
+  - export tag=$(release-tag)
+  - git tag $${tag}
+  - git push origin $${tag}
+image_pull_secrets:
+- dockerconfigjson
+trigger:
+  event:
+  - promote
+  target:
+  - production
 ---
 kind: secret
 name: dockerconfigjson
