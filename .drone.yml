@@ -23,7 +23,7 @@ type: kubernetes
 name: promote
 steps:
 - name: release
-  image: images.home.mtaylor.io/deployer:0.0.5
+  image: images.home.mtaylor.io/deployer:0.1.0
   commands:
   - set -u
   - git fetch origin 'refs/tags/*:refs/tags/*'
