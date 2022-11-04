@@ -1,0 +1,38 @@
+#!/bin/bash
+set -euo pipefail
+
+tag=${tag:-}
+
+if [[ -z "${tag}" ]]; then
+  prev_version=$(git tag --sort=v:refname | tail -n 1)
+  prev_major_version=$(echo -n ${prev_version} | cut -d'.' -f1)
+  prev_minor_version=$(echo -n ${prev_version} | cut -d'.' -f2)
+  prev_patch_version=$(echo -n ${prev_version} | cut -d'.' -f3)
+
+  bump=${bump:-patch}
+  case "${bump}" in
+    major)
+      major_version=$(( ${prev_major_version} + 1))
+      minor_version=${prev_minor_version}
+      patch_version=${prev_patch_version}
+      ;;
+    minor)
+      major_version=${prev_major_version}
+      minor_version=$(( ${prev_minor_version} + 1))
+      patch_version=${prev_patch_version}
+      ;;
+    patch)
+      major_version=${prev_major_version}
+      minor_version=${prev_minor_version}
+      patch_version=$(( ${prev_patch_version} + 1))
+      ;;
+    *)
+      echo "Can't bump version component: ${bump}"
+      exit 1
+      ;;
+  esac
+
+  tag=${major_version}.${minor_version}.${patch_version}
+fi
+
+echo -n ${tag}

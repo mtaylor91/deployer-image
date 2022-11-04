@@ -23,3 +23,5 @@ RUN curl -LfO ${KUBECTL_URL} \
 RUN curl -Lf ${KUSTOMIZE_URL} | tar -xz \
   && install -t /usr/local/bin/ kustomize \
   && rm -f kustomize
+
+ADD release-tag /usr/local/bin/release-tag
