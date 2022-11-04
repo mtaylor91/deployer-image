@@ -23,12 +23,12 @@ type: kubernetes
 name: promote
 steps:
 - name: release
-  image: images.home.mtaylor.io/deployer:0.0.4
+  image: images.home.mtaylor.io/deployer:0.0.5
   commands:
   - set -u
   - git fetch origin 'refs/tags/*:refs/tags/*'
   - git fetch origin $${DRONE_BRANCH}
-  - export tag=$(release-tag)
+  - export tag=$(get-release-tag)
   - git tag $${tag}
   - git push origin $${tag}
 image_pull_secrets:
