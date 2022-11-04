@@ -17,6 +17,9 @@ steps:
       from_secret: registry_url
 image_pull_secrets:
 - dockerconfigjson
+trigger:
+  event:
+  - push
 ---
 kind: pipeline
 type: kubernetes
