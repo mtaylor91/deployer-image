@@ -21,6 +21,7 @@ trigger:
   event:
   - push
   - tag
+  - custom
 ---
 kind: pipeline
 type: kubernetes
