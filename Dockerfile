@@ -31,4 +31,4 @@ RUN curl -Lfo tea ${TEA_URL} \
   && install -t /usr/local/bin/ -m 0755 tea \
   && rm -f tea
 
-ADD release-tag /usr/local/bin/release-tag
+ADD get-release-tag /usr/local/bin/get-release-tag

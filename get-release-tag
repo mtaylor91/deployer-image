@@ -2,6 +2,8 @@
 set -euo pipefail
 
 tag=${tag:-}
+tag_prefix=${tag_prefix:-}
+tag_suffix=${tag_suffix:-}
 
 if [[ -z "${tag}" ]]; then
   prev_version=$(git tag --sort=v:refname | tail -n 1)
@@ -33,6 +35,14 @@ if [[ -z "${tag}" ]]; then
   esac
 
   tag=${major_version}.${minor_version}.${patch_version}
+fi
+
+if [[ ! -z "${tag_prefix}" ]]; then
+  tag="${tag_prefix}${tag}"
+fi
+
+if [[ ! -z "${tag_suffix}" ]]; then
+  tag="${tag}${tag_suffix}"
 fi
 
 echo -n ${tag}
