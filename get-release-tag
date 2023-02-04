@@ -11,6 +11,16 @@ if [[ -z "${tag}" ]]; then
   prev_minor_version=$(echo -n ${prev_version} | cut -d'.' -f2)
   prev_patch_version=$(echo -n ${prev_version} | cut -d'.' -f3)
 
+  if [[ -z "${prev_major_version}" ]]; then
+    prev_major_version=0
+  fi
+  if [[ -z "${prev_minor_version}" ]]; then
+    prev_minor_version=0
+  fi
+  if [[ -z "${prev_patch_version}" ]]; then
+    prev_patch_version=0
+  fi
+
   bump=${bump:-patch}
   case "${bump}" in
     major)
