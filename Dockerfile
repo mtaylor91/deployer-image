@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM images.home.mtaylor.io/base
 
 ENV KUBECTL_VERSION v1.25.3
 ENV KUBECTL_URL https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
