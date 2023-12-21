@@ -1,17 +1,14 @@
 FROM images.home.mtaylor.io/base
 
-ENV KUBECTL_VERSION v1.25.3
+ENV KUBECTL_VERSION v1.28.4
 ENV KUBECTL_URL https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
 
-ENV KUSTOMIZE_VERSION v4.5.7
+ENV KUSTOMIZE_VERSION v5.3.0
 ENV KUSTOMIZE_REPO https://github.com/kubernetes-sigs/kustomize
 ENV KUSTOMIZE_RELEASE ${KUSTOMIZE_REPO}/releases/download/kustomize%2F${KUSTOMIZE_VERSION}
 ENV KUSTOMIZE_FILENAME kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz
 ENV KUSTOMIZE_URL ${KUSTOMIZE_RELEASE}/${KUSTOMIZE_FILENAME}
 ENV DEBIAN_FRONTEND noninteractive
-
-ENV TEA_VERSION 0.9.0
-ENV TEA_URL https://dl.gitea.io/tea/${TEA_VERSION}/tea-${TEA_VERSION}-linux-amd64
 
 RUN apt-get update \
   && apt-get upgrade -y \
@@ -26,9 +23,5 @@ RUN curl -LfO ${KUBECTL_URL} \
 RUN curl -Lf ${KUSTOMIZE_URL} | tar -xz \
   && install -t /usr/local/bin/ kustomize \
   && rm -f kustomize
-
-RUN curl -Lfo tea ${TEA_URL} \
-  && install -t /usr/local/bin/ -m 0755 tea \
-  && rm -f tea
 
 ADD get-release-tag /usr/local/bin/get-release-tag
