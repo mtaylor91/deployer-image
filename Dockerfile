@@ -24,4 +24,5 @@ RUN curl -Lf ${KUSTOMIZE_URL} | tar -xz \
   && install -t /usr/local/bin/ kustomize \
   && rm -f kustomize
 
+ADD branch-name-for-tag /usr/local/bin/branch-name-for-tag
 ADD get-release-tag /usr/local/bin/get-release-tag

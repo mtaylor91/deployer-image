@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+tag=$1
+major_version=$(echo -n ${tag} | cut -d'.' -f1)
+minor_version=$(echo -n ${tag} | cut -d'.' -f2)
+echo -n ${major_version}.${minor_version}
