@@ -65,7 +65,7 @@ jobs:
       shell: bash
       run: |
         set -euxo pipefail
-        tag=${{ needs.stack-build.outputs.tag }}
+        tag=${{ needs.docker-build.outputs.tag }}
         git config --global --add safe.directory $GITHUB_WORKSPACE
         git config --global user.email "githubactions@mtaylor.io"
         git config --global user.name "GitHub Actions"
