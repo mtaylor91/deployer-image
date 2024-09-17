@@ -1,16 +1,16 @@
 FROM images.home.mtaylor.io/base
 
-ENV ARGOCD_URL https://argocd.mtaylor.io/download/argocd-linux-amd64
+ENV ARGOCD_URL=https://argocd.mtaylor.io/download/argocd-linux-amd64
 
-ENV KUBECTL_VERSION v1.28.4
-ENV KUBECTL_URL https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
+ENV KUBECTL_VERSION=v1.28.4
+ENV KUBECTL_URL=https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
 
-ENV KUSTOMIZE_VERSION v5.3.0
-ENV KUSTOMIZE_REPO https://github.com/kubernetes-sigs/kustomize
-ENV KUSTOMIZE_RELEASE ${KUSTOMIZE_REPO}/releases/download/kustomize%2F${KUSTOMIZE_VERSION}
-ENV KUSTOMIZE_FILENAME kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz
-ENV KUSTOMIZE_URL ${KUSTOMIZE_RELEASE}/${KUSTOMIZE_FILENAME}
-ENV DEBIAN_FRONTEND noninteractive
+ENV KUSTOMIZE_VERSION=v5.3.0
+ENV KUSTOMIZE_REPO=https://github.com/kubernetes-sigs/kustomize
+ENV KUSTOMIZE_RELEASE=${KUSTOMIZE_REPO}/releases/download/kustomize%2F${KUSTOMIZE_VERSION}
+ENV KUSTOMIZE_FILENAME=kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz
+ENV KUSTOMIZE_URL=${KUSTOMIZE_RELEASE}/${KUSTOMIZE_FILENAME}
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
   && apt-get upgrade -y \
