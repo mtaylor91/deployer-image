@@ -1,5 +1,7 @@
 FROM images.home.mtaylor.io/base
 
+ENV ARGOCD_URL https://argocd.mtaylor.io/download/argocd-linux-amd64
+
 ENV KUBECTL_VERSION v1.28.4
 ENV KUBECTL_URL https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
 
@@ -15,6 +17,10 @@ RUN apt-get update \
   && apt-get install -y curl git yq \
   && rm -rf /var/lib/apt/lists/* \
   && apt-get clean
+
+RUN curl -LfO ${ARGOCD_URL} \
+  && install -T -m 0755 argocd-linux-amd64 /usr/local/bin/argocd \
+  && rm -f argocd-linux-amd64
 
 RUN curl -LfO ${KUBECTL_URL} \
   && install -t /usr/local/bin/ -m 0755 kubectl \

@@ -1,0 +1,73 @@
+name: Build Development Trunk
+on:
+  push:
+    branches:
+      - main
+jobs:
+  version:
+    name: Assign Version
+    runs-on: deployer-image-runner-k8s
+    container:
+      image: images.home.mtaylor.io/deployer:latest
+    outputs:
+      tag: ${{ steps.version.outputs.tag }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - id: version
+      name: Generate Version Tag
+      run: |
+        set -eux
+        git config --global --add safe.directory $GITHUB_WORKSPACE
+        git fetch origin 'refs/tags/*:refs/tags/*'
+        export tag=$(get-release-tag)
+        echo "tag=$tag" >> $GITHUB_OUTPUT
+  docker-build:
+    name: Docker Build
+    needs: version
+    runs-on: deployer-image-runner-dind
+    outputs:
+      tag: ${{ needs.version.outputs.tag }}
+    steps:
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    - name: Checkout
+      uses: actions/checkout@v4
+    - id: meta
+      name: Docker Metadata
+      uses: docker/metadata-action@v5
+      with:
+        images: images.home.mtaylor.io/deployer
+        tags: |
+          latest
+          ${{ needs.version.outputs.tag }}
+          type=sha
+    - name: "Docker Build"
+      uses: "docker/build-push-action@v6"
+      with:
+        push: true
+        context: "."
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+  git-tag:
+    name: Git Tag
+    needs: docker-build
+    runs-on: deployer-image-runner-k8s
+    container:
+      image: images.home.mtaylor.io/deployer:latest
+    outputs:
+      tag: ${{ needs.docker-build.outputs.tag }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - id: tag
+      name: Tag
+      shell: bash
+      run: |
+        set -euxo pipefail
+        tag=${{ needs.stack-build.outputs.tag }}
+        git config --global --add safe.directory $GITHUB_WORKSPACE
+        git config --global user.email "githubactions@mtaylor.io"
+        git config --global user.name "GitHub Actions"
+        git tag $tag
+        git push origin $tag
